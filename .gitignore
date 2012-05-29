@@ -1,0 +1,9 @@
+src
+pkg
+
+*.pkg.*
+*.src.*
+*.tar.*
+*.run
+*~
+aufs3-standalone
