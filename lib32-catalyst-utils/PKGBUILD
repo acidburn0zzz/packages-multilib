@@ -12,8 +12,8 @@ url="http://www.ati.amd.com"
 arch=(x86_64)
 license=('custom')
 groups=('lib32')
-depends=('lib32-libxext' 'lib32-libdrm' 'catalyst-utils')
-conflicts=('lib32-libgl' 'lib32-nvidia-utils' 'lib32-ati-dri')
+depends=('lib32-libgl' 'lib32-libxext' 'lib32-libdrm' 'catalyst-utils')
+conflicts=('lib32-nvidia-utils' 'lib32-ati-dri')
 replaces=('lib32-ati-fglrx-utils' 'lib32-fglrx-utils' 'lib32-ati-dri')
 source=(#http://www2.ati.com/drivers/linux/amd-driver-installer-${pkgver/./-}-x86.x86_64.run 
         http://www2.ati.com/drivers/hotfix/catalyst_12.6_hotfixes/amd-driver-installer-8.98-x86.x86_64.zip
