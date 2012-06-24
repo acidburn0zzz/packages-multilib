@@ -63,6 +63,11 @@ package() {
     mkdir -p "${pkgdir}/usr/share/licenses"
     ln -s $_pkgbasename "${pkgdir}/usr/share/licenses/${pkgname}"
 
+
+	# Bumblebee support
+	mkdir -p "${pkgdir}/usr/lib32/nvidia-bumblebee"
+	ln -s "/usr/lib32/libGL.so.nvidia" "${pkgdir}/usr/lib32/nvidia-bumblebee/libGL.so"
+
     # some cleanup
     cd "${pkgdir}/usr/lib32/"
     rm -f `ls ./ | grep libGL | grep -v libGL.so.nvidia`
