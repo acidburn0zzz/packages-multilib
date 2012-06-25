@@ -7,7 +7,7 @@
 _pkgbasename=nvidia-utils
 pkgname=lib32-$_pkgbasename
 pkgver=302.17
-pkgrel=1
+pkgrel=2
 pkgdesc="NVIDIA drivers utilities and libraries. (32-bit)"
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -63,10 +63,9 @@ package() {
     mkdir -p "${pkgdir}/usr/share/licenses"
     ln -s $_pkgbasename "${pkgdir}/usr/share/licenses/${pkgname}"
 
-
-	# Bumblebee support
-	mkdir -p "${pkgdir}/usr/lib32/nvidia-bumblebee"
-	ln -s "/usr/lib32/libGL.so.nvidia" "${pkgdir}/usr/lib32/nvidia-bumblebee/libGL.so"
+    # Bumblebee support
+    mkdir -p "${pkgdir}/usr/lib32/nvidia-bumblebee"
+    ln -s "/usr/lib32/libGL.so.nvidia" "${pkgdir}/usr/lib32/nvidia-bumblebee/libGL.so"
 
     # some cleanup
     cd "${pkgdir}/usr/lib32/"
