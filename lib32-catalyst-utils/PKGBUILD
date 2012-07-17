@@ -6,16 +6,15 @@
 _pkgsourcename=catalyst-utils
 pkgname=lib32-$_pkgsourcename
 pkgver=12.6
-pkgrel=3
+pkgrel=4
 pkgdesc="AMD/ATI catalyst driver utilities and libraries. (32-bit)"
 url="http://www.ati.amd.com"
 arch=(x86_64)
 license=('custom')
 groups=('lib32')
 depends=('lib32-libgl' 'lib32-libxext' 'lib32-libdrm' 'catalyst-utils')
-conflicts=('lib32-nvidia-utils' 'lib32-ati-dri' 'lib32-intel-dri' 'lib32-nouveau-dri')
-provides=('lib32-ati-dri' 'lib32-intel-dri' 'lib32-nouveau-dri')
-replaces=('lib32-ati-fglrx-utils' 'lib32-fglrx-utils' 'lib32-ati-dri' 'lib32-intel-dri' 'lib32-nouveau-dri')
+conflicts=('lib32-nvidia-utils' 'lib32-catalyst-legacy-utils')
+replaces=('lib32-ati-fglrx-utils' 'lib32-fglrx-utils')
 source=(http://www2.ati.com/drivers/linux/amd-driver-installer-${pkgver/./-}-x86.x86_64.run 
         #http://www2.ati.com/drivers/hotfix/catalyst_12.6_hotfixes/amd-driver-installer-8.98-x86.x86_64.zip
         lib32-catalyst.sh)

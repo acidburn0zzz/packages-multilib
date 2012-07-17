@@ -3,7 +3,7 @@
 # maintainer: Roland Singer <roland[at]manjaro[dog]org>
 
 pkgbase=lib32-mesa
-pkgname=('lib32-mesa' 'lib32-libgl' 'lib32-libglapi' 'lib32-libgles' 'lib32-ati-dri' 'lib32-intel-dri' 'lib32-nouveau-dri' 'lib32-libgbm')
+pkgname=('lib32-mesa' 'lib32-libgl' 'lib32-libglapi' 'lib32-libgles' 'lib32-ati-dri' 'lib32-intel-dri' 'lib32-libgbm') # 'lib32-nouveau-dri'
 
 #_git=true
 _gitdate=20111031
@@ -13,7 +13,7 @@ if [ "${_git}" = "true" ]; then
     #pkgver=7.10.99.git20110709
     pkgver=7.11
   else
-    pkgver=8.0.3
+    pkgver=8.0.4
 fi
 
 pkgrel=1
@@ -30,7 +30,7 @@ if [ "${_git}" = "true" ]; then
 else
   source=(${source[@]} "ftp://ftp.freedesktop.org/pub/mesa/${pkgver}/MesaLib-${pkgver}.tar.bz2")
   md5sums=('0082f4d17674155aa13bc611a5687788'
-           'cc5ee15e306b8c15da6a478923797171')
+           'd546f988adfdf986cff45b1efa2d8a46')
 fi
 #options=('!buildflags')
 
@@ -51,7 +51,7 @@ build() {
 
   autoreconf -vfi
 
-  if [ "${_git}" = "true" ]; then
+if [ "${_git}" = "true" ]; then
      ./autogen.sh --prefix=/usr \
     --with-dri-driverdir=/usr/lib32/xorg/modules/dri \
     --with-gallium-drivers=r300,r600,nouveau,swrast \
@@ -72,7 +72,8 @@ build() {
   else
     ./configure --prefix=/usr \
     --with-dri-driverdir=/usr/lib32/xorg/modules/dri \
-    --with-gallium-drivers=r300,r600,nouveau,swrast \
+    --with-gallium-drivers=r300,r600,svga,swrast \
+    --with-dri-drivers=i915,i965,r200,radeon,swrast \
     --enable-gallium-llvm \
     --disable-gallium-egl --enable-shared-glapi \
     --enable-glx-tls \
@@ -85,6 +86,7 @@ build() {
     --enable-shared-dricore \
     --enable-32-bit \
     --libdir=/usr/lib32
+#   --with-gallium-drivers=r300,r600,nouveau,swrast \ # also without --with-dri-driver
   fi
 
   make
