@@ -2,11 +2,11 @@
 # Thomas Baechler <thomas@archlinux.org>
 # James Rayner <iphitus@gmail.com>
 
-# Maintainer: Clittle <philm@manjarolinux.org>
+# Maintainer: Philip Müller <philm@manjarolinux.org>
 
 _pkgbasename=nvidia-utils
 pkgname=lib32-$_pkgbasename
-pkgver=304.37
+pkgver=304.43
 pkgrel=1
 pkgdesc="NVIDIA drivers utilities and libraries. (32-bit)"
 arch=('x86_64')
@@ -19,7 +19,7 @@ install=$_pkgbasename.install
 _arch='x86'
 _pkg="NVIDIA-Linux-${_arch}-${pkgver}"
 source=("http://us.download.nvidia.com/XFree86/Linux-${_arch}/${pkgver}/${_pkg}.run")
-sha256sums=('ab3174a0c9ab37a8fc3f4a8fc1121d72fbdd5e00ddecf44f7dbd84bb8d51b337')
+sha256sums=('7c7f483302a0a5a828b8ef1f5a4a53f8e16d3b73d0c17bd61ed0d843cad32c4c')
 
 build() {
     cd "${srcdir}"
