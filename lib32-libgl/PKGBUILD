@@ -15,7 +15,7 @@ install=libgl.install
 url="http://mesa3d.sourceforge.net"
 license=('custom')
 #options=('!buildflags')
-source=(http://mirror.us.leaseweb.net/archlinux/multilib/os/$CARCH/$pkgname-$pkgver-4-$CARCH.pkg.tar.xz)
+source=(http://mirror.us.leaseweb.net/archlinux/multilib/os/$CARCH/$pkgname-$pkgver-$pkgrel-$CARCH.pkg.tar.xz)
 sha256sums=('2f6822a1a6ff3c2e1705d5e9be3e7e054a6a3c0a3f1e8bb58b6d15b1c3536816')
 
 package() {
