@@ -5,9 +5,8 @@
 
 _pkgsourcename=catalyst-utils
 pkgname=lib32-$_pkgsourcename
-pkgver=12.8
-_amdver=8.982
-pkgrel=2
+pkgver=12.10
+pkgrel=1
 pkgdesc="AMD/ATI catalyst driver utilities and libraries. (32-bit)"
 url="http://www.ati.amd.com"
 arch=(x86_64)
@@ -16,50 +15,48 @@ groups=('lib32')
 depends=('lib32-libgl' 'lib32-libxext' 'lib32-libdrm' 'catalyst-utils')
 conflicts=('lib32-catalyst-legacy-utils')
 replaces=('lib32-ati-fglrx-utils' 'lib32-fglrx-utils')
-source=(http://www2.ati.com/drivers/linux/amd-driver-installer-${pkgver/./-}-x86.x86_64.zip
-        #http://www2.ati.com/drivers/hotfix/catalyst_12.6_hotfixes/amd-driver-installer-8.98-x86.x86_64.zip
-        lib32-catalyst.sh)
-md5sums=('41c5478322b13be6909eeb46412a3aa0' 'af7fb8ee4fc96fd54c5b483e33dc71c4')
+source=("http://www2.ati.com/drivers/linux/amd-driver-installer-catalyst-${pkgver}-x86.x86_64.zip")
+md5sums=('ef6ecd984e47e80849215b33fbfa5b7f')
 install=${pkgname}.install
 
 build() {
-  # Extract Catalyst driver installer
-  /bin/sh ./amd-driver-installer-${_amdver}-x86.x86_64.run --extract archive_files
-  #/bin/sh ./amd-driver-installer-8.98-x86.x86_64.run --extract archive_files
+  cd ${srcdir}
+
+  sh ./amd-driver-installer*.run --extract fglrx-install
 }
 
 package() {
-  cd ${srcdir}
-  install -D -m755 lib32-catalyst.sh ${pkgdir}/etc/profile.d/lib32-catalyst.sh || return 1
+  depends=("catalyst-utils=${pkgver}")
 
-  # Install lib32 libraries
-  cd "${srcdir}/archive_files/arch/x86/usr" || return 1
-  install -dm755 "${pkgdir}/usr/lib32" || return 1
-  install -dm755 "${pkgdir}/usr/lib32/fglrx" || return 1 # since 11.4
-  install -dm755 "${pkgdir}/usr/lib32/xorg/modules/dri" || return 1
-  install -m755 lib/*.so* "${pkgdir}/usr/lib32/" || return 1
-  #install -m755 X11R6/lib/*.so* "${pkgdir}/usr/lib32/" || return 1 #before 11.4
+  install -dm755 "${pkgdir}"/usr/bin
+  install -dm755 "${pkgdir}"/usr/lib32/{dri,xorg/modules/{dri,extensions/fglrx}}
+  
+  # binaries
+  cd ${srcdir}/fglrx-install
+  install -m755 arch/x86/usr/X11R6/bin/fgl_glxgears "${pkgdir}/usr/bin/fgl_glxgears32"
+  install -m755 arch/x86/usr/X11R6/bin/fglrxinfo "${pkgdir}/usr/bin/fglrxinfo32"
+  
+  # dri/gl/... drivers
+  cd ${srcdir}/fglrx-install/xpic/usr/X11R6/lib/modules
+  install -m755 *.so "${pkgdir}/usr/lib32/xorg/modules/"
+  cd ${srcdir}/fglrx-install/arch/x86/usr/X11R6/lib
+  install -m755 modules/dri/fglrx_dri.so "${pkgdir}/usr/lib32/xorg/modules/dri/"
+  ln -s /usr/lib32/xorg/modules/dri/fglrx_dri.so "${pkgdir}/usr/lib32/dri/"
+  install -m755 fglrx/fglrx-libGL.so.1.2 "${pkgdir}/usr/lib32/"
+  install -m755 *.so* "${pkgdir}/usr/lib32/"
+  install -m644 libAMDXvBA.cap "${pkgdir}/usr/lib32/"
+  cd ${srcdir}/fglrx-install/arch/x86/usr/lib
+  install -m755 *.so* "${pkgdir}/usr/lib32/"
+  # needed symlinks
+  ln -s libatiuki.so.1.0 "${pkgdir}/usr/lib32/libatiuki.so.1"
+  ln -s fglrx-libGL.so.1.2 "${pkgdir}/usr/lib32/libGL.so.catalyst"
+  ln -s libAMDXvBA.so.1.0 "${pkgdir}/usr/lib32/libAMDXvBA.so.1"
+  ln -s libAMDXvBA.so.1.0 "${pkgdir}/usr/lib32/libAMDXvBA.so"
+  ln -s libfglrx_dm.so.1.0 "${pkgdir}/usr/lib32/libfglrx_dm.so.1"
+  
+  # useful for 32 bits ?
+  rm "${pkgdir}"/usr/lib32/lib{amdocl*,OpenCL}.so* 
 
-  install -m755 X11R6/lib/fglrx/fglrx-libGL.so.1.2 "${pkgdir}/usr/lib32/fglrx" || return 1 # since 11.5
-  ln -sf /usr/lib32/fglrx/fglrx-libGL.so.1.2 "${pkgdir}/usr/lib32/fglrx/libGL.so.1.2" # since 11.4
-  ln -sf /usr/lib32/fglrx/fglrx-libGL.so.1.2 "${pkgdir}/usr/lib32/fglrx-libGL.so.1.2" # since 11.4
-  ln -sf /usr/lib32/fglrx/fglrx-libGL.so.1.2 "${pkgdir}/usr/lib32/libGL.so.catalyst" # since 12.6
-  install -m755 X11R6/lib/libAMDXvBA.so.1.0 "${pkgdir}/usr/lib32/" || return 1 # since 11.4
-  install -m755 X11R6/lib/libatiadlxx.so "${pkgdir}/usr/lib32/" || return 1 # since 11.4
-  install -m755 X11R6/lib/libfglrx_dm.so.1.0 "${pkgdir}/usr/lib32/" || return 1 # since 11.4
-  install -m755 X11R6/lib/libXvBAW.so.1.0 "${pkgdir}/usr/lib32/" || return 1 # since 11.4
-
-  install -m755 X11R6/lib/modules/dri/*.so "${pkgdir}/usr/lib32/xorg/modules/dri/" || return 1
-  ln -snf /usr/lib32/xorg/modules/dri "${pkgdir}/usr/lib32/dri" || return 1
-
-  cd "$pkgdir/usr/lib32/" || return 1
-  ln -sf libfglrx_dm.so.1.0 libfglrx_dm.so.1 || return 1
-  # ln -sf libfglrx_pp.so.1.0 libfglrx_pp.so.1 || return 1
-  # ln -sf libfglrx_tvout.so.1.0 libfglrx_tvout.so.1 || return 1
-  # ln -sf libfglrx_gamma.so.1.0 libfglrx_gamma.so.1 || return 1
-  ln -sf libAMDXvBA.so.1.0 libAMDXvBA.so.1 || return 1
-  ln -sf libXvBAW.so.1.0 libXvBAW.so.1 || return 1
-  ln -sf libatiuki.so.1.0 libatiuki.so.1 || return 1
-  ln -sf libatiuki.so.1.0 libatiuki.so || return 1
-  ln -sf libOpenCL.so.1 libOpenCL.so  || return 1 # since 11.11
+  # licenses
+  install -Dm644 "${srcdir}/fglrx-install/common/usr/share/doc/fglrx/LICENSE.TXT" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.TXT"
 }
