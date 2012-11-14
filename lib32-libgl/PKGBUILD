@@ -5,23 +5,26 @@
 # maintainer: Roland Singer <roland[at]manjaro[dog]org>
 
 pkgname=('lib32-libgl')
-pkgver=8.0.4
-pkgrel=4
+pkgver=9.0
+pkgrel=1
 arch=('x86_64')
-depends=('lib32-libdrm>=2.4.31' 'lib32-libxxf86vm>=1.1.1' 'lib32-libxdamage>=1.1.3' 'lib32-expat>=2.0.1' 'lib32-libglapi' 'libgl' 'mhwd')
+depends=('mhwd' 'lib32-libdrm>=2.4.39' 'lib32-libxxf86vm>=1.1.2' 'lib32-libxdamage>=1.1.3' 'lib32-expat>=2.1.0' 'lib32-libglapi'
+           'libgl')
 pkgdesc="Mesa 3-D graphics library and DRI software rasterizer (32-bit)"
-#replaces=('lib32-unichrome-dri' 'lib32-mach64-dri' 'lib32-mga-dri' 'lib32-r128-dri' 'lib32-savage-dri' 'lib32-sis-dri' 'lib32-tdfx-dri')
+# currently disabled so force the remove
+conflicts=('lib32-libgbm')
+replace=('lib32-libgbm')
 install=libgl.install
 url="http://mesa3d.sourceforge.net"
 license=('custom')
 #options=('!buildflags')
 source=(http://mirror.us.leaseweb.net/archlinux/multilib/os/$CARCH/$pkgname-$pkgver-$pkgrel-$CARCH.pkg.tar.xz)
-sha256sums=('2f6822a1a6ff3c2e1705d5e9be3e7e054a6a3c0a3f1e8bb58b6d15b1c3536816')
+sha256sums=('d2cd5365dcc9c4d5c1a5500e3f1a97cb2714c52588953b8894ea03fbab4d44a6')
 
 package() {
   cp -rPf usr ${pkgdir}
-  mv "${pkgdir}/usr/lib32/libGL.so.1.2" "${pkgdir}/usr/lib32/libGL.so.mesa"
+  mv "${pkgdir}/usr/lib32/libGL.so.1.2.0" "${pkgdir}/usr/lib32/libGL.so.mesa"
   rm "${pkgdir}/usr/lib32/libGL.so.1"
   rm "${pkgdir}/usr/lib32/libGL.so"
-  rm "${pkgdir}/usr/lib32/xorg/modules/extensions/libglx.so"
+  # rm "${pkgdir}/usr/lib32/xorg/modules/extensions/libglx.so"
 }
