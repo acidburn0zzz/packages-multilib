@@ -6,4 +6,5 @@ pkg
 *.tar.*
 *.run
 *~
+*.zip
 aufs3-standalone
