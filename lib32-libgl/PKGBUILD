@@ -5,7 +5,7 @@
 # maintainer: Roland Singer <roland[at]manjaro[dog]org>
 
 pkgname=('lib32-libgl')
-pkgver=9.0
+pkgver=9.0.1
 pkgrel=1
 arch=('x86_64')
 depends=('mhwd' 'lib32-libdrm>=2.4.39' 'lib32-libxxf86vm>=1.1.2' 'lib32-libxdamage>=1.1.3' 'lib32-expat>=2.1.0' 'lib32-libglapi'
@@ -19,7 +19,7 @@ url="http://mesa3d.sourceforge.net"
 license=('custom')
 #options=('!buildflags')
 source=(http://mirror.us.leaseweb.net/archlinux/multilib/os/$CARCH/$pkgname-$pkgver-$pkgrel-$CARCH.pkg.tar.xz)
-sha256sums=('d2cd5365dcc9c4d5c1a5500e3f1a97cb2714c52588953b8894ea03fbab4d44a6')
+sha256sums=('c9fc26437af5b25e5c14942250691e2bf1b810d86cac5065e68a09c43bf69060')
 
 package() {
   cp -rPf usr ${pkgdir}
