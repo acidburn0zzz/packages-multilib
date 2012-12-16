@@ -5,9 +5,9 @@
 
 _pkgsourcename=catalyst-utils
 pkgname=lib32-$_pkgsourcename
-pkgver=12.12
-#_beta=beta11
-pkgrel=1
+pkgver=12.11
+_beta=beta11
+pkgrel=2
 pkgdesc="AMD/ATI catalyst driver utilities and libraries. (32-bit)"
 url="http://www.ati.amd.com"
 arch=(x86_64)
@@ -16,8 +16,8 @@ groups=('lib32')
 depends=('lib32-libgl' 'lib32-libxext' 'lib32-libdrm' 'catalyst-utils')
 conflicts=('lib32-catalyst-legacy-utils')
 replaces=('lib32-ati-fglrx-utils' 'lib32-fglrx-utils')
-source=(http://www2.ati.com/drivers/embedded/9.01-121106a-150335C-EDG_Direct.zip)
-sha256sums=('b6759f3a1eefef3c722f080a72226638abf719695cb05f027200ff9bbe27ecfa')
+source=(http://www2.ati.com/drivers/beta/amd-driver-installer-catalyst-${pkgver}-${_beta}-x86.x86_64.zip)
+sha256sums=('d76edd98ed2ca4dfda63cff9060a3e367f32b4cc9a13590f91aba853d85b847b')
 install=${pkgname}.install
 
 build() {
