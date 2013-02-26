@@ -4,22 +4,20 @@
 # maintainer: Philip Müller <philm[at]manjaro[dog]org>
 # maintainer: Roland Singer <roland[at]manjaro[dog]org>
 
-pkgname=('lib32-libgl')
-pkgver=9.0.1
-pkgrel=1
+pkgname=('lib32-mesa-libgl')
+pkgver=9.1
+pkgrel=2
 arch=('x86_64')
-depends=('mhwd' 'lib32-libdrm>=2.4.39' 'lib32-libxxf86vm>=1.1.2' 'lib32-libxdamage>=1.1.3' 'lib32-expat>=2.1.0' 'lib32-libglapi'
-           'libgl')
+depends=("lib32-mesa=${pkgver}")
+provides=("lib32-libgl=${pkgver}")
+replaces=('lib32-libgl')
 pkgdesc="Mesa 3-D graphics library and DRI software rasterizer (32-bit)"
-# currently disabled so force the remove
-conflicts=('lib32-libgbm')
-replace=('lib32-libgbm')
 install=libgl.install
 url="http://mesa3d.sourceforge.net"
 license=('custom')
 #options=('!buildflags')
 source=(http://mirror.us.leaseweb.net/archlinux/multilib/os/$CARCH/$pkgname-$pkgver-$pkgrel-$CARCH.pkg.tar.xz)
-sha256sums=('c9fc26437af5b25e5c14942250691e2bf1b810d86cac5065e68a09c43bf69060')
+sha256sums=('1ea0e47154557c7ddb4c1660bf947f762fbf0165bfe430d1efc74e37f94c394f')
 
 package() {
   cp -rPf usr ${pkgdir}
