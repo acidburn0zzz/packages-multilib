@@ -4,10 +4,10 @@
 # Maintainer:  Phil Müller <philm@manajro.org>
 # Contributor: Guinux <nuxgui@gmail.com>
 
-pkgname=lib32-systemd
+pkgname=lib32-systemd-next
 _pkgbasename=systemd
-pkgver=198
-pkgrel=2
+pkgver=201
+pkgrel=1
 pkgdesc="system and service manager (32-bit)"
 arch=('x86_64')
 url="http://www.freedesktop.org/wiki/Software/systemd"
@@ -15,10 +15,12 @@ license=('GPL2' 'LGPL2.1' 'MIT')
 makedepends=('lib32-gcc-libs' 'gcc-multilib' 'lib32-dbus-core' 'lib32-libcap' 'lib32-acl' 
              'lib32-libgcrypt' 'lib32-glib2' 'lib32-xz' 'intltool' 'gperf')
 options=('!libtool')
+provides=("lib32-systemd=$pkgver")
+conflicts=('lib32-systemd')
 source=("http://www.freedesktop.org/software/$_pkgbasename/$_pkgbasename-$pkgver.tar.xz"
         use-split-usr-path.patch)
-md5sums=('26a75e2a310f8c1c1ea9ec26ddb171c5'
-         '76bf83fe34c5b40533abc5dc940576a6')
+sha256sums=('d6299f1a0bc2122002d731808d3825c6b566d1ffe899c03ed5ebec7e70c8cc10'
+            'bb0336f5956f93c4c3ac8f5b798956a54e071d6c03e93fb73d45268bf572b8b2')
 
 build() {
   export CC="gcc -m32"

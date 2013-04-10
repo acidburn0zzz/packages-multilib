@@ -3,7 +3,7 @@
 # Contributor: Alexander Monakov <amonakov@gmail.com>
 
 pkgname=lib32-primus
-pkgver=20130329
+pkgver=20130410
 pkgrel=1
 pkgdesc="Faster OpenGL offloading for Bumblebee (32-bit library)"
 arch=('x86_64')

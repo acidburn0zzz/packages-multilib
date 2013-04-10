@@ -6,7 +6,7 @@
 
 _pkgbasename=nvidia-utils
 pkgname=lib32-$_pkgbasename
-pkgver=313.26
+pkgver=313.30
 pkgrel=1
 pkgdesc="NVIDIA drivers utilities and libraries. (32-bit)"
 arch=('x86_64')
@@ -19,7 +19,7 @@ install=$_pkgbasename.install
 _arch='x86'
 _pkg="NVIDIA-Linux-${_arch}-${pkgver}"
 source=("http://download.nvidia.com/XFree86/Linux-${_arch}/${pkgver}/${_pkg}.run")
-sha256sums=('9d4864bb954315197a955fcb348ed1eaa0ceb5cdb74aeba7afc07f58c01aaece')
+sha256sums=('0a0f10979b1bca8e4a244e204b58aeb9a580924a9dd7b11b21d15abfe1ad49ad')
 
 build() {
     cd "${srcdir}"
