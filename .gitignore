@@ -1,10 +1,11 @@
 src
 pkg
-
 *.pkg.*
 *.src.*
 *.tar.*
+*.tgz
 *.run
-*~
 *.zip
-aufs3-standalone
+*.xz
+*.log
+*~
