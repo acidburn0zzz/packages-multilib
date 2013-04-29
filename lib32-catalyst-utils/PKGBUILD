@@ -1,62 +1,60 @@
-# Partly based on original PKGBUILD by Mikko Seppala <t-r-a-y@mbnet.fi>
-# Contributor: Manuel Gaul <inkaine@hotmail.com>
 # Contributor: Vi0L0 <vi0l093@gmail.com>
-# Contributor: Enverex & kidoz
+# Maintainer: Philip Müller <philm[at]manjaro[dog]org>
+# Maintainer: Roland Singer <roland[at]manjaro[dog]org>
 
 _pkgsourcename=catalyst-utils
 pkgname=lib32-$_pkgsourcename
-pkgver=13.1
+pkgver=13.4
 pkgrel=1
 pkgdesc="AMD/ATI catalyst driver utilities and libraries. (32-bit)"
-url="http://www.ati.amd.com"
+url="http://www.amd.com"
 arch=(x86_64)
 license=('custom')
 groups=('lib32')
-depends=('lib32-libgl' 'lib32-libxext' 'lib32-libdrm' 'catalyst-utils')
+depends=('lib32-libxext' 'lib32-libdrm' 'catalyst-utils' 'mhwd')
 conflicts=('lib32-catalyst-legacy-utils')
-replaces=('lib32-ati-fglrx-utils' 'lib32-fglrx-utils')
-source=("http://www2.ati.com/drivers/linux/amd-driver-installer-catalyst-${pkgver}-linux-x86.x86_64.zip")
-sha256sums=('67898a922b6b58f25a276a144f16b19014f79c39e4d44d8d2883a467d31e34ad')
-install=${pkgname}.install
+install="${pkgname}.install"
+source=(http://www2.ati.com/drivers/linux/amd-catalyst-${pkgver}-linux-x86.x86_64.zip
+        lib32-catalyst.sh)
+sha256sums=('ebec78c7f78db3601d1c97116a6823076a7765318e16d88b619ebc80d4c6d1d5'
+            '760433497a6d844c4fc7cb5a244c4cad2f6a291e53ebe890205807ad1927230e')
+
 
 build() {
-  cd ${srcdir}
-
-  sh ./amd-driver-installer*.run --extract fglrx-install
+     /bin/sh ./amd-catalyst-${pkgver}-linux-x86.x86_64.run --extract archive_files
 }
 
 package() {
-  depends=("catalyst-utils=${pkgver}")
+      cd ${srcdir}
+      install -D -m755 lib32-catalyst.sh ${pkgdir}/etc/profile.d/lib32-catalyst.sh
+      cd ${srcdir}/archive_files/arch/x86/usr
+      install -dm755 ${pkgdir}/usr/lib32
+      install -dm755 ${pkgdir}/usr/lib32/fglrx
+      install -dm755 ${pkgdir}/usr/lib32/xorg/modules/dri
+      install -m755 lib/*.so* ${pkgdir}/usr/lib32
+      install -m755 X11R6/lib/fglrx/fglrx-libGL.so.1.2 ${pkgdir}/usr/lib32/fglrx/libGL.so.1.2
+      ln -sf libGL.so.1.2 ${pkgdir}/usr/lib32/fglrx/libGL.so.1
+      ln -sf libGL.so.1.2 ${pkgdir}/usr/lib32/fglrx/libGL.so
+      install -m755 X11R6/lib/libAMDXvBA.so.1.0 ${pkgdir}/usr/lib32
+      install -m755 X11R6/lib/libatiadlxx.so ${pkgdir}/usr/lib32
+      install -m755 X11R6/lib/libfglrx_dm.so.1.0 ${pkgdir}/usr/lib32
+      install -m755 X11R6/lib/libXvBAW.so.1.0 ${pkgdir}/usr/lib32
+      install -m755 X11R6/lib/modules/dri/*.so ${pkgdir}/usr/lib32/xorg/modules/dri
+      ln -snf /usr/lib32/xorg/modules/dri ${pkgdir}/usr/lib32/dri
 
-  install -dm755 "${pkgdir}"/usr/bin
-  install -dm755 "${pkgdir}"/usr/lib32/{dri,xorg/modules/{dri,extensions/fglrx}}
-  
-  # binaries
-  cd ${srcdir}/fglrx-install
-  install -m755 arch/x86/usr/X11R6/bin/fgl_glxgears "${pkgdir}/usr/bin/fgl_glxgears32"
-  install -m755 arch/x86/usr/X11R6/bin/fglrxinfo "${pkgdir}/usr/bin/fglrxinfo32"
-  
-  # dri/gl/... drivers
-  cd ${srcdir}/fglrx-install/xpic/usr/X11R6/lib/modules
-  install -m755 *.so "${pkgdir}/usr/lib32/xorg/modules/"
-  cd ${srcdir}/fglrx-install/arch/x86/usr/X11R6/lib
-  install -m755 modules/dri/fglrx_dri.so "${pkgdir}/usr/lib32/xorg/modules/dri/"
-  ln -s /usr/lib32/xorg/modules/dri/fglrx_dri.so "${pkgdir}/usr/lib32/dri/"
-  install -m755 fglrx/fglrx-libGL.so.1.2 "${pkgdir}/usr/lib32/"
-  install -m755 *.so* "${pkgdir}/usr/lib32/"
-  install -m644 libAMDXvBA.cap "${pkgdir}/usr/lib32/"
-  cd ${srcdir}/fglrx-install/arch/x86/usr/lib
-  install -m755 *.so* "${pkgdir}/usr/lib32/"
-  # needed symlinks
-  ln -s libatiuki.so.1.0 "${pkgdir}/usr/lib32/libatiuki.so.1"
-  ln -s fglrx-libGL.so.1.2 "${pkgdir}/usr/lib32/libGL.so.catalyst"
-  ln -s libAMDXvBA.so.1.0 "${pkgdir}/usr/lib32/libAMDXvBA.so.1"
-  ln -s libAMDXvBA.so.1.0 "${pkgdir}/usr/lib32/libAMDXvBA.so"
-  ln -s libfglrx_dm.so.1.0 "${pkgdir}/usr/lib32/libfglrx_dm.so.1"
-  
-  # useful for 32 bits ?
-  rm "${pkgdir}"/usr/lib32/lib{amdocl*,OpenCL}.so* 
+      cd $pkgdir/usr/lib32
+      ln -sf libfglrx_dm.so.1.0 libfglrx_dm.so.1
+      ln -sf libAMDXvBA.so.1.0 libAMDXvBA.so.1
+      ln -sf libXvBAW.so.1.0 libXvBAW.so.1
+      ln -sf libatiuki.so.1.0 libatiuki.so.1
+      ln -sf libatiuki.so.1.0 libatiuki.so
+      ln -sf libOpenCL.so.1 libOpenCL.so
 
-  # licenses
-  install -Dm644 "${srcdir}/fglrx-install/common/usr/share/doc/fglrx/LICENSE.TXT" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.TXT"
+      # OpenCL
+      install -m755 -d ${pkgdir}/etc/OpenCL/vendors
+      install -m644 ${srcdir}/archive_files/arch/x86/etc/OpenCL/vendors/amdocl32.icd ${pkgdir}/etc/OpenCL/vendors
+
+      # License
+      install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+      install -m644 ${srcdir}/archive_files/LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}
 }

@@ -19,7 +19,7 @@ msg() {
 post_install() {
 	mhwd-gpu --check
 
-	msg "use mhwd-gpu to set catalyst as default: 'mhwd-gpu --setgl catalyst'"
+	msg "use mhwd-gpu to change the default libGL library."
 }
 
 

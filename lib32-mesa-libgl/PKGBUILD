@@ -1,0 +1,21 @@
+# Maintainer: Philip Müller <philm@manjaro.org>
+# Maintainer: Roland Singer <roland@manjaro.org>
+
+pkgname=lib32-mesa-libgl
+pkgver=9.1.1
+pkgrel=2
+pkgdesc="Mesa 3-D graphics library"
+arch=('any')
+url="http://mesa3d.sourceforge.net"
+license=('custom')
+depends=("lib32-mesa=${pkgver}" 'mhwd')
+provides=('lib32-libgl' 'lib32-nvidia-libgl' 'lib32-nvidia-304xx-libgl' 'lib32-catalyst-libgl')
+install="${pkgname}.install"
+md5sums=(SKIP)
+
+
+
+package() {
+  install -m755 -d "${pkgdir}/usr/share/licenses/libglapi"
+  ln -s libglapi "${pkgdir}/usr/share/licenses/libglapi/lib32-libglapi"
+}
