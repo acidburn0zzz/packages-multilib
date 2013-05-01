@@ -17,11 +17,6 @@ msg() {
 
 
 post_install() {
-	# Skip the mhwd-gpu check to prevent the overwrite of the libGL symlinks created by manjaro-system
-	if [ "$(vercmp $2 304.88-4)" -lt 0 ]; then
-		return
-	fi
-
 	mhwd-gpu --check
 
 	msg "use mhwd-gpu to set nvidia as default: 'mhwd-gpu --setgl nvidia'"
