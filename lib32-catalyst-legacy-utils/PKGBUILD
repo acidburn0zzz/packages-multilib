@@ -5,7 +5,7 @@
 _pkgsourcename=catalyst-legacy-utils
 pkgname=lib32-$_pkgsourcename
 pkgver=13.1
-pkgrel=2
+pkgrel=3
 pkgdesc="AMD/ATI Legacy Catalyst driver utilities and libraries. (32-bit)"
 url="http://www.amd.com"
 arch=(x86_64)
@@ -35,6 +35,10 @@ package() {
       install -m755 X11R6/lib/fglrx/fglrx-libGL.so.1.2 ${pkgdir}/usr/lib32/fglrx/libGL.so.1.2
       ln -sf libGL.so.1.2 ${pkgdir}/usr/lib32/fglrx/libGL.so.1
       ln -sf libGL.so.1.2 ${pkgdir}/usr/lib32/fglrx/libGL.so
+
+      # Fallback links
+      ln -s "/usr/lib32/fglrx/libGL.so.1.2" "${pkgdir}/usr/lib32/libGL.so.catalyst"
+
       install -m755 X11R6/lib/libAMDXvBA.so.1.0 ${pkgdir}/usr/lib32
       install -m755 X11R6/lib/libatiadlxx.so ${pkgdir}/usr/lib32
       install -m755 X11R6/lib/libfglrx_dm.so.1.0 ${pkgdir}/usr/lib32

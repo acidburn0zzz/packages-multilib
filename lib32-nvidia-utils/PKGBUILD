@@ -6,7 +6,7 @@ _pkgbasename=nvidia-utils
 pkgbase=lib32-$_pkgbasename
 pkgname=('lib32-nvidia-utils' 'lib32-opencl-nvidia')
 pkgver=313.30
-pkgrel=4
+pkgrel=5
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
@@ -46,11 +46,16 @@ package_lib32-nvidia-utils() {
     install="${pkgname}.install"
 
     cd "${srcdir}/${_pkg}"
+
     # OpenGL library
     install -D -m755 "libGL.so.${pkgver}" "${pkgdir}/usr/lib32/nvidia/libGL.so"
     ln -s "libGL.so" "${pkgdir}/usr/lib32/nvidia/libGL.so.${pkgver}"
     ln -s "libGL.so" "${pkgdir}/usr/lib32/nvidia/libGL.so.1.2"
     ln -s "libGL.so" "${pkgdir}/usr/lib32/nvidia/libGL.so.1"
+
+	# Fallback links
+	ln -s "/usr/lib32/nvidia/libGL.so" "${pkgdir}/usr/lib32/libGL.so.nvidia"
+
     # OpenGL core library
     install -D -m755 libnvidia-glcore.so.${pkgver} "${pkgdir}/usr/lib32/libnvidia-glcore.so.${pkgver}"
     # VDPAU

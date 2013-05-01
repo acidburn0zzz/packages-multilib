@@ -17,11 +17,6 @@ msg() {
 
 
 post_install() {
-	# Skip the mhwd-gpu check to prevent the overwrite of the libGL symlinks created by manjaro-system
-	if [ "$(vercmp $2 9.1.1-4)" -lt 0 ]; then
-		return
-	fi
-
 	mhwd-gpu --check
 
 	msg "use mhwd-gpu to change the default libGL library."

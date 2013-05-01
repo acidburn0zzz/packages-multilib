@@ -4,7 +4,7 @@
 _pkgbasename=nvidia-304xx-utils
 pkgname=lib32-$_pkgbasename
 pkgver=304.88
-pkgrel=4
+pkgrel=5
 pkgdesc="NVIDIA drivers utilities and libraries. (32-bit)"
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -34,6 +34,10 @@ package() {
     ln -s "libGL.so" "${pkgdir}/usr/lib32/nvidia/libGL.so.${pkgver}"
     ln -s "libGL.so" "${pkgdir}/usr/lib32/nvidia/libGL.so.1.2"
     ln -s "libGL.so" "${pkgdir}/usr/lib32/nvidia/libGL.so.1"
+
+	# Fallback links
+	ln -s "/usr/lib32/nvidia/libGL.so" "${pkgdir}/usr/lib32/libGL.so.nvidia"
+
     # OpenGL core library
     install -D -m755 libnvidia-glcore.so.${pkgver} "${pkgdir}/usr/lib32/libnvidia-glcore.so.${pkgver}"
     # XvMC
