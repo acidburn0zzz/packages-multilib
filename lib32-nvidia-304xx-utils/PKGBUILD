@@ -4,12 +4,14 @@
 _pkgbasename=nvidia-304xx-utils
 pkgname=lib32-$_pkgbasename
 pkgver=304.88
-pkgrel=2
+pkgrel=3
 pkgdesc="NVIDIA drivers utilities and libraries. (32-bit)"
 arch=('x86_64')
 url="http://www.nvidia.com/"
 depends=('lib32-libxvmc' 'lib32-zlib' 'lib32-gcc-libs' 'nvidia-304xx-utils' 'mhwd')
-conflicts=('lib32-nvidia-utils')
+conflicts=('lib32-nvidia-utils' 'lib32-nvidia-legacy-utils')
+provides=('lib32-nvidia-legacy-utils')
+replaces=('lib32-nvidia-legacy-utils')
 license=('custom')
 options=('!strip')
 install="${pkgname}.install"
