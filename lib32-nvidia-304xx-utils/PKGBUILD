@@ -4,7 +4,7 @@
 _pkgbasename=nvidia-304xx-utils
 pkgname=lib32-$_pkgbasename
 pkgver=304.88
-pkgrel=5
+pkgrel=6
 pkgdesc="NVIDIA drivers utilities and libraries. (32-bit)"
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -35,8 +35,8 @@ package() {
     ln -s "libGL.so" "${pkgdir}/usr/lib32/nvidia/libGL.so.1.2"
     ln -s "libGL.so" "${pkgdir}/usr/lib32/nvidia/libGL.so.1"
 
-	# Fallback links
-	ln -s "/usr/lib32/nvidia/libGL.so" "${pkgdir}/usr/lib32/libGL.so.nvidia"
+    # Fallback links
+    ln -s "/usr/lib32/nvidia/libGL.so" "${pkgdir}/usr/lib32/libGL.so.nvidia"
 
     # OpenGL core library
     install -D -m755 libnvidia-glcore.so.${pkgver} "${pkgdir}/usr/lib32/libnvidia-glcore.so.${pkgver}"
@@ -66,7 +66,9 @@ package() {
         fi
     done
 
+    # Cleanup
     rm -rf "${pkgdir}"/usr/{include,share,bin}
+    rm "${pkgdir}/usr/lib32/libGL.so.1" "${pkgdir}/usr/lib32/libGL.so"
     mkdir -p "${pkgdir}/usr/share/licenses"
     ln -s $_pkgbasename "${pkgdir}/usr/share/licenses/${pkgname}"
 }
