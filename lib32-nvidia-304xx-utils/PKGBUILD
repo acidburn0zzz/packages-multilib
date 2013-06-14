@@ -4,7 +4,7 @@
 _pkgbasename=nvidia-304xx-utils
 pkgname=lib32-$_pkgbasename
 pkgver=304.88
-pkgrel=6
+pkgrel=7
 pkgdesc="NVIDIA drivers utilities and libraries. (32-bit)"
 arch=('x86_64')
 url="http://www.nvidia.com/"
