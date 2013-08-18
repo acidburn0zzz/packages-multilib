@@ -4,8 +4,9 @@
 
 _pkgsourcename=catalyst-utils
 pkgname=lib32-$_pkgsourcename
-pkgver=13.4
-pkgrel=3
+pkgver=13.8
+pkgrel=1
+_betano=1
 pkgdesc="AMD/ATI catalyst driver utilities and libraries. (32-bit)"
 url="http://www.amd.com"
 arch=(x86_64)
@@ -14,14 +15,15 @@ groups=('lib32')
 depends=('lib32-libxext' 'lib32-libdrm' 'catalyst-utils' 'mhwd')
 conflicts=('lib32-catalyst-legacy-utils')
 install="${pkgname}.install"
-source=(http://www2.ati.com/drivers/linux/amd-catalyst-${pkgver}-linux-x86.x86_64.zip
+source=(http://www2.ati.com/drivers/beta/amd-catalyst-${pkgver}-beta${_betano}-linux-x86.x86_64.zip
+        #http://www2.ati.com/drivers/linux/amd-catalyst-${pkgver}-linux-x86.x86_64.zip
         lib32-catalyst.sh)
-sha256sums=('ebec78c7f78db3601d1c97116a6823076a7765318e16d88b619ebc80d4c6d1d5'
+sha256sums=('c2b57ae90d33beedd7015aae15518939f182ccf6e0fbb42fb194e90278672f40'
             '760433497a6d844c4fc7cb5a244c4cad2f6a291e53ebe890205807ad1927230e')
 
-
-build() {
-     /bin/sh ./amd-catalyst-${pkgver}-linux-x86.x86_64.run --extract archive_files
+prepare() {
+	/bin/sh ./amd-catalyst-${pkgver}-beta${_betano}-linux-x86.x86_64.run --extract archive_files
+	#/bin/sh ./amd-catalyst-${pkgver}-linux-x86.x86_64.run --extract archive_files
 }
 
 package() {
