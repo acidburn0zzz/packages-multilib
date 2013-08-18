@@ -5,14 +5,15 @@
 _pkgsourcename=catalyst-legacy-utils
 pkgname=lib32-$_pkgsourcename
 pkgver=13.1
-pkgrel=3
+pkgrel=4
 pkgdesc="AMD/ATI Legacy Catalyst driver utilities and libraries. (32-bit)"
 url="http://www.amd.com"
 arch=(x86_64)
 license=('custom')
 groups=('lib32')
 depends=('lib32-libxext' 'lib32-libdrm' 'catalyst-legacy-utils' 'mhwd')
-conflicts=('lib32-catalyst-utils')
+conflicts=('lib32-catalyst-utils' 'lib32-libcl')
+provides=('lib32-libcl')
 install="${pkgname}.install"
 source=(http://www2.ati.com/drivers/legacy/amd-driver-installer-catalyst-${pkgver}-legacy-linux-x86.x86_64.zip
         lib32-catalyst.sh)
