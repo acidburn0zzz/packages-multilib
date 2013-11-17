@@ -2,7 +2,7 @@
 # Maintainer: Roland Singer <roland@manjaro.org>
 
 pkgname=lib32-mesa-libgl
-pkgver=9.2.2
+pkgver=9.2.3
 pkgrel=1
 pkgdesc="Mesa 3-D graphics library"
 arch=('any')
