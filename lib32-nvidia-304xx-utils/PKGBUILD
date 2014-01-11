@@ -2,19 +2,15 @@
 # Maintainer: Roland Singer <roland[at]manjaro[dog]org>
 
 _pkgbasename=nvidia-304xx-utils
-pkgname=lib32-$_pkgbasename
+pkgbase=lib32-$_pkgbasename
+pkgname=('lib32-nvidia-304xx-utils' 'lib32-opencl-nvidia-304xx')
 pkgver=304.117
-pkgrel=1
+pkgrel=2
 pkgdesc="NVIDIA drivers utilities and libraries. (32-bit)"
 arch=('x86_64')
 url="http://www.nvidia.com/"
-depends=('lib32-libxvmc' 'lib32-zlib' 'lib32-gcc-libs' 'nvidia-304xx-utils' 'mhwd')
-conflicts=('lib32-nvidia-utils' 'lib32-nvidia-legacy-utils')
-provides=('lib32-nvidia-legacy-utils')
-replaces=('lib32-nvidia-legacy-utils')
 license=('custom')
 options=('!strip')
-install="${pkgname}.install"
 
 _arch='x86'
 _pkg="NVIDIA-Linux-${_arch}-${pkgver}"
@@ -26,7 +22,33 @@ build() {
     sh ${_pkg}.run --extract-only
 }
 
-package() {
+package_lib32-opencl-nvidia-304xx() {
+    pkgdesc="OpenCL implemention for NVIDIA (32-bit)"
+    depends=('lib32-libcl' 'lib32-zlib' 'lib32-gcc-libs' 'opencl-nvidia-304xx')
+    optdepends=('opencl-headers: headers necessary for OpenCL development')
+    conflicts=('lib32-opencl-nvidia')
+
+    cd "${srcdir}/${_pkg}"
+
+    # OpenCL
+    install -D -m755 "libnvidia-compiler.so.${pkgver}" "${pkgdir}/usr/lib32/libnvidia-compiler.so.${pkgver}"
+    ln -s "libnvidia-compiler.so.${pkgver}" "${pkgdir}/usr/lib32/libnvidia-compiler.so.1"
+    ln -s "libnvidia-compiler.so.${pkgver}" "${pkgdir}/usr/lib32/libnvidia-compiler.so"
+
+    install -D -m755 "libnvidia-opencl.so.${pkgver}" "${pkgdir}/usr/lib32/libnvidia-opencl.so.${pkgver}" 
+    ln -s "libnvidia-opencl.so.${pkgver}" "${pkgdir}/usr/lib32/libnvidia-opencl.so.1"
+    ln -s "libnvidia-opencl.so.${pkgver}" "${pkgdir}/usr/lib32/libnvidia-opencl.so"
+}
+
+package_lib32-nvidia-304xx-utils() {
+    pkgdesc="NVIDIA drivers utilities (32-bit)"
+    depends=('lib32-libxvmc' 'lib32-zlib' 'lib32-gcc-libs' 'nvidia-304xx-utils' 'mhwd')
+    optdepends=('lib32-opencl-nvidia-304xx')
+    conflicts=('lib32-catalyst-utils' 'lib32-catalyst-legacy-utils' 'lib32-catalyst-13.4-utils' 'lib32-nvidia-utils')
+    provides=('lib32-nvidia-legacy-utils')
+    replaces=('lib32-nvidia-legacy-utils')
+    install="${pkgname}.install"
+
     cd "${srcdir}/${_pkg}"
 
     # OpenGL library
@@ -34,7 +56,6 @@ package() {
     ln -s "libGL.so" "${pkgdir}/usr/lib32/nvidia/libGL.so.${pkgver}"
     ln -s "libGL.so" "${pkgdir}/usr/lib32/nvidia/libGL.so.1.2"
     ln -s "libGL.so" "${pkgdir}/usr/lib32/nvidia/libGL.so.1"
-
     # OpenGL core library
     install -D -m755 libnvidia-glcore.so.${pkgver} "${pkgdir}/usr/lib32/libnvidia-glcore.so.${pkgver}"
     # XvMC
@@ -47,9 +68,6 @@ package() {
     install -D -m755 libnvcuvid.so.${pkgver} "${pkgdir}/usr/lib32/libnvcuvid.so.${pkgver}"
     # nvidia-tls library
     install -D -m755 tls/libnvidia-tls.so.${pkgver} "${pkgdir}/usr/lib32/libnvidia-tls.so.${pkgver}"
-    # OpenCL
-    install -D -m755 libnvidia-compiler.so.${pkgver} "${pkgdir}/usr/lib32/libnvidia-compiler.so.${pkgver}"
-    install -D -m755 libOpenCL.so.1.0.0 "${pkgdir}/usr/lib32/libOpenCL.so.1.0.0"
 
     install -D -m755 libnvidia-cfg.so.${pkgver} "${pkgdir}/usr/lib32/libnvidia-cfg.so.${pkgver}"
     install -D -m755 libnvidia-ml.so.${pkgver} "${pkgdir}/usr/lib32/libnvidia-ml.so.${pkgver}"
@@ -68,14 +86,12 @@ package() {
 
     # Cleanup
     rm -rf "${pkgdir}"/usr/{include,share,bin}
-    if [ -f rm "${pkgdir}/usr/lib32/libGL.so" ]; then
+    if [ -f "${pkgdir}/usr/lib32/libGL.so" ]; then
         rm "${pkgdir}/usr/lib32/libGL.so"
     fi
-    if [ -f rm "${pkgdir}/usr/lib32/libGL.so.1" ]; then
+    if [ -f "${pkgdir}/usr/lib32/libGL.so.1" ]; then
         rm "${pkgdir}/usr/lib32/libGL.so.1"
     fi
     mkdir -p "${pkgdir}/usr/share/licenses"
     ln -s $_pkgbasename "${pkgdir}/usr/share/licenses/${pkgname}"
 }
-
-

@@ -80,10 +80,10 @@ package_lib32-nvidia-utils() {
 
     # Cleanup
     rm -rf "${pkgdir}"/usr/{include,share,bin}
-    if [ -f rm "${pkgdir}/usr/lib32/libGL.so" ]; then
+    if [ -f "${pkgdir}/usr/lib32/libGL.so" ]; then
         rm "${pkgdir}/usr/lib32/libGL.so"
     fi
-    if [ -f rm "${pkgdir}/usr/lib32/libGL.so.1" ]; then
+    if [ -f "${pkgdir}/usr/lib32/libGL.so.1" ]; then
         rm "${pkgdir}/usr/lib32/libGL.so.1"
     fi
     mkdir -p "${pkgdir}/usr/share/licenses"
