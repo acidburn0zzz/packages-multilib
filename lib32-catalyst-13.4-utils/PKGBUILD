@@ -3,18 +3,18 @@
 # Maintainer: Roland Singer <roland[at]manjaro[dog]org>
 
 _pkgsourcename=catalyst-13.4-utils
-pkgname=lib32-$_pkgsourcename
+pkgbase=lib32-$_pkgsourcename
+pkgname=("lib32-$_pkgsourcename" 'lib32-opencl-catalyst-13.4')
 _pkgver=13.4
 pkgver=12.104
-pkgrel=1
+pkgrel=3
 pkgdesc="AMD/ATI catalyst driver utilities and libraries. (32-bit)"
 url="http://www.amd.com"
 arch=(x86_64)
 license=('custom')
 groups=('lib32')
-depends=('lib32-libxext' 'lib32-libdrm' 'catalyst-utils' 'mhwd')
-conflicts=('lib32-catalyst-utils' 'lib32-catalyst-legacy-utils' 'lib32-libcl')
-provides=('lib32-libcl')
+depends=('lib32-libxext' 'lib32-libdrm' 'catalyst-13.4-utils' 'mhwd')
+conflicts=('lib32-catalyst-utils' 'lib32-catalyst-legacy-utils')
 install="${pkgname}.install"
 source=(http://geeko.ioda.net/mirror/amd-fglrx/raw-src/amd-catalyst-${_pkgver}-linux-x86.x86_64.zip
         lib32-catalyst.sh)
@@ -26,7 +26,7 @@ prepare() {
 	/bin/sh ./amd-catalyst-${_pkgver}-linux-x86.x86_64.run --extract archive_files
 }
 
-package() {
+package_lib32-catalyst-13.4-utils() {
       cd ${srcdir}
       install -D -m755 lib32-catalyst.sh ${pkgdir}/etc/profile.d/lib32-catalyst.sh
       cd ${srcdir}/archive_files/arch/x86/usr
@@ -54,13 +54,32 @@ package() {
       ln -sf libXvBAW.so.1.0 libXvBAW.so.1
       ln -sf libatiuki.so.1.0 libatiuki.so.1
       ln -sf libatiuki.so.1.0 libatiuki.so
-      ln -sf libOpenCL.so.1 libOpenCL.so
-
-      # OpenCL
-      install -m755 -d ${pkgdir}/etc/OpenCL/vendors
-      install -m644 ${srcdir}/archive_files/arch/x86/etc/OpenCL/vendors/amdocl32.icd ${pkgdir}/etc/OpenCL/vendors
 
       # License
       install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
       install -m644 ${srcdir}/archive_files/LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}
+
+      # provided in lib32-opencl-catalyst-13.4 package
+      rm "${pkgdir}"/usr/lib32/lib{amdocl*,OpenCL}.so* 
+}
+
+package_lib32-opencl-catalyst-13.4() {
+      pkgdesc="OpenCL implemention from AMD (32-bit)"
+      provides=('lib32-libcl')
+      conflicts=('lib32-libcl' 'lib32-opencl-catalyst-legacy' 'lib32-opencl-catalyst')
+      depends=('lib32-gcc-libs')
+      optdepends=('opencl-headers: headers necessary for OpenCL development')
+      
+      install -dm755 "${pkgdir}"/usr/lib32
+      install -dm755 "${pkgdir}/etc/OpenCL/vendors"
+      install -dm755 "${pkgdir}/usr/share/licenses/${pkgname}"
+      
+      _ARCHDIR="x86"
+      cd ${srcdir}/archive_files/arch/${_ARCHDIR}
+      install -m644 etc/OpenCL/vendors/amdocl*.icd "${pkgdir}/etc/OpenCL/vendors/"
+      install -m755 usr/lib/libamdocl*.so "${pkgdir}/usr/lib32/"
+      install -m755 usr/lib/libOpenCL.so.1 "${pkgdir}/usr/lib32/"
+      ln -s libOpenCL.so.1 "${pkgdir}/usr/lib32/libOpenCL.so"
+      # license
+      install -m644 "${srcdir}/archive_files/LICENSE.TXT" "${pkgdir}/usr/share/licenses/${pkgname}/"
 }
