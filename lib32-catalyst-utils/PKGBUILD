@@ -5,9 +5,8 @@
 _pkgsourcename=catalyst-utils
 pkgbase=lib32-$_pkgsourcename
 pkgname=("lib32-$_pkgsourcename" 'lib32-opencl-catalyst')
-pkgver=13.35.1005
-pkgrel=1
-_tarball=14.1-betav1.3
+pkgver=13.12
+pkgrel=3
 pkgdesc="AMD/ATI catalyst driver utilities and libraries. (32-bit)"
 url="http://www.amd.com"
 arch=(x86_64)
@@ -16,14 +15,15 @@ groups=('lib32')
 depends=('lib32-libxext' 'lib32-libdrm' 'catalyst-utils' 'mhwd')
 conflicts=('lib32-catalyst-legacy-utils' 'lib32-catalyst-13.4-utils')
 install="${pkgname}.install"
-source=(http://www2.ati.com/drivers/beta/amd-catalyst-${_tarball}-linux-x86.x86_64.zip
+source=(http://www2.ati.com/drivers/linux/amd-catalyst-${pkgver}-linux-x86.x86_64.zip
         lib32-catalyst.sh)
-sha256sums=('61258534756b494fbd35c10a18b142d8805b07f4f9bab394b3a445cbf6a543fa'
+sha256sums=('baea420f5f8679bbc1548c2ab15a776460c19074afa56431f10b9081c4b06eb0'
             '1f4f611ed80e2626ef39486020a06c328c15dad76e1365a4bd553342060ff409')
 
 prepare() {
-	/bin/sh ./amd-driver-installer-${pkgver}-x86.x86_64.run --extract archive_files
+	#/bin/sh ./amd-driver-installer-${pkgver}-x86.x86_64.run --extract archive_files
 	#/bin/sh ./amd-catalyst-${pkgver}-linux-x86.x86_64.run --extract archive_files
+	/bin/sh ./amd-catalyst-${pkgver}-linux-x86.x86_64.run --extract archive_files
 }
 
 package_lib32-catalyst-utils() {
