@@ -5,7 +5,7 @@
 _pkgbasename=nvidia-utils
 pkgbase=lib32-$_pkgbasename
 pkgname=('lib32-nvidia-utils' 'lib32-opencl-nvidia')
-pkgver=331.49
+pkgver=331.67
 pkgrel=1
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -15,7 +15,7 @@ options=('!strip')
 _arch='x86'
 _pkg="NVIDIA-Linux-${_arch}-${pkgver}"
 source=("http://us.download.nvidia.com/XFree86/Linux-${_arch}/${pkgver}/${_pkg}.run")
-sha256sums=('b6725d71f25e22300f1ef92d57089675d454d17746084f1a166576c7105ea701')
+sha256sums=('696b4a574ad3cb2b3286e0848e7e831940110cc33c63de51890154dbbd31acc6')
 
 build() {
     cd "${srcdir}"
@@ -55,16 +55,23 @@ package_lib32-nvidia-utils() {
 
     # OpenGL core library
     install -D -m755 libnvidia-glcore.so.${pkgver} "${pkgdir}/usr/lib32/libnvidia-glcore.so.${pkgver}"
+
+    # misc
+    install -D -m755 "libnvidia-ifr.so.${pkgver}" "${pkgdir}/usr/lib32/libnvidia-ifr.so.${pkgver}"
+    install -D -m755 "libnvidia-fbc.so.${pkgver}" "${pkgdir}/usr/lib32/libnvidia-fbc.so.${pkgver}"
+    install -D -m755 "libnvidia-encode.so.${pkgver}" "${pkgdir}/usr/lib32/libnvidia-encode.so.${pkgver}"
+    install -D -m755 "libnvidia-cfg.so.${pkgver}" "${pkgdir}/usr/lib32/libnvidia-cfg.so.${pkgver}"
+    install -D -m755 "libnvidia-ml.so.${pkgver}" "${pkgdir}/usr/lib32/libnvidia-ml.so.${pkgver}"
+
     # VDPAU
     install -D -m755 libvdpau_nvidia.so.${pkgver} "${pkgdir}/usr/lib32/vdpau/libvdpau_nvidia.so.${pkgver}"
-    # CUDA
-    install -D -m755 libcuda.so.${pkgver} "${pkgdir}/usr/lib32/libcuda.so.${pkgver}"
-    install -D -m755 libnvcuvid.so.${pkgver} "${pkgdir}/usr/lib32/libnvcuvid.so.${pkgver}"
+
     # nvidia-tls library
     install -D -m755 tls/libnvidia-tls.so.${pkgver} "${pkgdir}/usr/lib32/libnvidia-tls.so.${pkgver}"
 
-    install -D -m755 libnvidia-cfg.so.${pkgver} "${pkgdir}/usr/lib32/libnvidia-cfg.so.${pkgver}"
-    install -D -m755 libnvidia-ml.so.${pkgver} "${pkgdir}/usr/lib32/libnvidia-ml.so.${pkgver}"
+    # CUDA
+    install -D -m755 libcuda.so.${pkgver} "${pkgdir}/usr/lib32/libcuda.so.${pkgver}"
+    install -D -m755 libnvcuvid.so.${pkgver} "${pkgdir}/usr/lib32/libnvcuvid.so.${pkgver}"
 
     # create soname links
     for _lib in $(find "${pkgdir}" -name '*.so*'); do
