@@ -5,9 +5,9 @@
 _pkgsourcename=catalyst-utils
 pkgbase=lib32-$_pkgsourcename
 pkgname=("lib32-$_pkgsourcename" 'lib32-opencl-catalyst')
-pkgver=14.10
+pkgver=14.10.1006
 pkgrel=1
-_tarball=14.4-rc-v1.0-apr17
+_tarball=14-4-linux-x86-x86-64
 pkgdesc="AMD/ATI catalyst driver utilities and libraries. (32-bit)"
 url="http://www.amd.com"
 arch=(x86_64)
@@ -16,9 +16,9 @@ groups=('lib32')
 depends=('lib32-libxext' 'lib32-libdrm' 'catalyst-utils' 'mhwd')
 conflicts=('lib32-catalyst-legacy-utils' 'lib32-catalyst-13.4-utils')
 install="${pkgname}.install"
-source=(http://www2.ati.com/drivers/linux/linux-amd-catalyst-${_tarball}.zip
+source=(http://www2.ati.com/drivers/linux/amd-catalyst-${_tarball}.zip
         lib32-catalyst.sh)
-sha256sums=('c61698ebeab2b1c235a53cbd484948af80c206eddb61be15930fb7e107a09bb8'
+sha256sums=('03cc022a49f47888b04f12343ace82bc1eff3aac524e6b4433848c20dc77fec0'
             '1f4f611ed80e2626ef39486020a06c328c15dad76e1365a4bd553342060ff409')
 
 prepare() {
