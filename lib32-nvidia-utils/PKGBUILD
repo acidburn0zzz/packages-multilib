@@ -15,7 +15,7 @@ options=('!strip')
 _arch='x86'
 _pkg="NVIDIA-Linux-${_arch}-${pkgver}"
 source=("http://us.download.nvidia.com/XFree86/Linux-${_arch}/${pkgver}/${_pkg}.run")
-sha256sums=('696b4a574ad3cb2b3286e0848e7e831940110cc33c63de51890154dbbd31acc6')
+sha256sums=('344d3daaec8010ffe53fd132f706d87d25448847f139eafc5fe76733837c8636')
 
 build() {
     cd "${srcdir}"
