@@ -24,6 +24,14 @@ post_install() {
 
 
 post_upgrade() {
+	if [ "$(mhwd -li | grep nvidia)" != "" ] && [ "$(mhwd -li | grep hybrid)" == "" ] ; then
+		msg "Fixing nvidia settings ..."
+		mhwd-gpu --setgl nvidia
+	fi
+	if [ "$(mhwd -li | grep hybrid)" != "" ]; then
+		msg "Fixing hybrid settings ..."
+		mhwd-gpu --setgl mesa
+	fi
 	post_install
 }
 

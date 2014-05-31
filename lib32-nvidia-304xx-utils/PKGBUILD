@@ -5,7 +5,7 @@ _pkgbasename=nvidia-304xx-utils
 pkgbase=lib32-$_pkgbasename
 pkgname=('lib32-nvidia-304xx-utils' 'lib32-opencl-nvidia-304xx')
 pkgver=304.121
-pkgrel=1
+pkgrel=2
 pkgdesc="NVIDIA drivers utilities and libraries. (32-bit)"
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -42,11 +42,12 @@ package_lib32-opencl-nvidia-304xx() {
 
 package_lib32-nvidia-304xx-utils() {
     pkgdesc="NVIDIA drivers utilities (32-bit)"
-    depends=('lib32-libxvmc' 'lib32-zlib' 'lib32-gcc-libs' 'nvidia-304xx-utils' 'mhwd')
+    depends=('lib32-libxvmc' 'lib32-zlib' 'lib32-gcc-libs' 'nvidia-304xx-utils' 'lib32-mesa' 'mhwd')
     optdepends=('lib32-opencl-nvidia-304xx')
-    conflicts=('lib32-catalyst-utils' 'lib32-catalyst-legacy-utils' 'lib32-catalyst-13.4-utils' 'lib32-nvidia-utils')
-    provides=('lib32-nvidia-legacy-utils')
-    replaces=('lib32-nvidia-legacy-utils')
+    conflicts=('lib32-catalyst-utils' 'lib32-catalyst-legacy-utils' 'lib32-catalyst-13.4-utils' 'lib32-nvidia-utils'
+               'lib32-nvidia-304xx-libgl')
+    provides=('lib32-nvidia-legacy-utils' 'lib32-nvidia-304xx-libgl')
+    replaces=('lib32-nvidia-legacy-utils' 'lib32-nvidia-304xx-libgl')
     install="${pkgname}.install"
 
     cd "${srcdir}/${_pkg}"
@@ -56,6 +57,10 @@ package_lib32-nvidia-304xx-utils() {
     ln -s "libGL.so" "${pkgdir}/usr/lib32/nvidia/libGL.so.${pkgver}"
     ln -s "libGL.so" "${pkgdir}/usr/lib32/nvidia/libGL.so.1.2"
     ln -s "libGL.so" "${pkgdir}/usr/lib32/nvidia/libGL.so.1"
+    # We have to provide symlinks to mesa, as nvidia 304xx doesn't ship them
+    ln -s /usr/lib32/mesa/libEGL.so.1.0.0 "${pkgdir}/usr/lib32/nvidia/libEGL.so.${pkgver}"
+    ln -s /usr/lib32/mesa/libGLESv1_CM.so.1.1.0 "${pkgdir}/usr/lib32/nvidia/libGLESv1_CM.so.${pkgver}"
+    ln -s /usr/lib32/mesa/libGLESv2.so.2.0.0 "${pkgdir}/usr/lib32/nvidia/libGLESv2.so.${pkgver}"
     # OpenGL core library
     install -D -m755 libnvidia-glcore.so.${pkgver} "${pkgdir}/usr/lib32/libnvidia-glcore.so.${pkgver}"
     # XvMC
@@ -80,9 +85,6 @@ package_lib32-nvidia-304xx-utils() {
             ln -s "$(basename ${_soname})" "${_soname/.[0-9]*/}"
         fi
     done
-
-    # Fallback link
-    ln -s "/usr/lib32/nvidia/libGL.so" "${pkgdir}/usr/lib32/libGL.so.nvidia"
 
     # Cleanup
     rm -rf "${pkgdir}"/usr/{include,share,bin}
